@@ -2,7 +2,10 @@ import os
 import sys
 import py2neo
 import logging
-import json
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.StreamHandler())
@@ -21,8 +24,10 @@ cypher_files = [
     "load_data_expanded_access.cypher",
 ]
 
-neo4j_config_str = os.getenv("NEO4J", '{"host":"localhost"}')
-neo4j_config_dict = json.loads(neo4j_config_str)
+neo4j_config_dict = {
+    "uri": os.getenv("NEO4J_URI"),
+    "auth": (os.getenv("NEO4J_USERNAME"), os.getenv("NEO4J_PASSWORD"))
+}
 ENV = os.getenv("ENV", "prod")
 
 
